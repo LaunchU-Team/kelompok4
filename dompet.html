@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dompet - Launch U</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+    body {
+      background: linear-gradient(135deg, #0052cc, #ff6a00);
+      color: #fff;
+      padding: 30px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.1);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .saldo {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+    }
+
+    button {
+      background: #ff6a00;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #e55b00;
+    }
+
+    /* Popup form */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .popup-content {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      color: #222;
+      text-align: left;
+    }
+
+    .popup-content h2 {
+      margin-bottom: 20px;
+    }
+
+    .popup-content input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+    }
+
+    .popup-content button {
+      width: 100%;
+    }
+
+    .close-btn {
+      background: #999;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Dompet Saya</h1>
+    <div class="saldo" id="saldoDisplay">Rp 0</div>
+    <button onclick="bukaPopup()">Isi Saldo</button>
+  </div>
+
+  <!-- Popup Form -->
+  <div class="popup" id="popupForm">
+    <div class="popup-content">
+      <h2>Masukkan Jumlah Saldo</h2>
+      <input type="number" id="jumlahSaldo" placeholder="Contoh: 10000" />
+      <button onclick="isiSaldo()">Tambah</button>
+      <button class="close-btn" onclick="tutupPopup()">Batal</button>
+    </div>
+  </div>
+
+  <script>
+    let saldo = 0;
+
+    function bukaPopup() {
+      document.getElementById("popupForm").style.display = "flex";
+    }
+
+    function tutupPopup() {
+      document.getElementById("popupForm").style.display = "none";
+    }
+
+    function isiSaldo() {
+      const input = document.getElementById("jumlahSaldo");
+      const jumlah = parseInt(input.value);
+      if (jumlah > 0) {
+        saldo += jumlah;
+        document.getElementById("saldoDisplay").innerText = "Rp " + saldo.toLocaleString("id-ID");
+        input.value = "";
+        tutupPopup();
+      } else {
+        alert("Masukkan jumlah yang valid.");
+      }
+    }
+  </script>
+
+</body>
+</html>

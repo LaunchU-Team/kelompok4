@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bantuan - Launch U</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+    body {
+      background: linear-gradient(135deg, #0052cc, #ff6a00);
+      color: #fff;
+      padding: 30px;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    header h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.9);
+      color: #333;
+      border-radius: 16px;
+      padding: 25px;
+      margin-bottom: 20px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+
+    .card h2 {
+      font-size: 1.5rem;
+      color: #0052cc;
+      margin-bottom: 10px;
+      border-bottom: 2px solid #ff6a00;
+      padding-bottom: 5px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .faq-list {
+      list-style: disc inside;
+      margin-left: 0;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .faq-list.active {
+      display: block;
+    }
+
+    .chat-button {
+      display: inline-block;
+      margin-top: 15px;
+      background: #ff6a00;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.3s;
+      cursor: pointer;
+    }
+
+    .chat-button:hover {
+      background: #e05b00;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: 600;
+      color: #0052cc;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 8px 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      resize: vertical;
+    }
+
+    button.submit-btn {
+      margin-top: 15px;
+      background: #0052cc;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+
+    button.submit-btn:hover {
+      background: #003d99;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 15px; }
+      header h1 { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Pusat Bantuan Launch U</h1>
+  </header>
+
+  <!-- FAQ -->
+  <section class="card">
+    <h2 id="faq-header">FAQ (Pertanyaan yang Sering Diajukan)</h2>
+    <ul class="faq-list" id="faq-list">
+      <li>Bagaimana cara berdonasi?</li>
+      <li>Apakah saya bisa membuat kampanye sendiri?</li>
+      <li>Bagaimana cara menarik dana?</li>
+      <li>Apa itu verifikasi akun?</li>
+    </ul>
+  </section>
+
+  <!-- Panduan Penggunaan -->
+  <section class="card">
+    <h2>Panduan Penggunaan</h2>
+    <p>Baca panduan langkah demi langkah tentang cara menggunakan platform Launch U, mulai dari membuat akun, membuat kampanye, hingga berdonasi.</p>
+  </section>
+
+  <!-- Kontak Bantuan -->
+  <section class="card">
+    <h2>Kontak Bantuan / Hubungi Kami</h2>
+    <p>Jika Anda membutuhkan bantuan lebih lanjut, silakan kirim email ke <a href="mailto:support@launchu.id">support@launchu.id</a>.</p>
+  </section>
+
+  <!-- Laporan Masalah -->
+  <section class="card">
+    <h2>Laporan Masalah</h2>
+    <form id="report-form">
+      <label for="nama">Nama</label>
+      <input type="text" id="nama" name="nama" placeholder="Nama Anda" required />
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="Email Anda" required />
+      <label for="masalah">Deskripsi Masalah</label>
+      <textarea id="masalah" name="masalah" rows="4" placeholder="Jelaskan masalah yang Anda alami" required></textarea>
+      <button type="submit" class="submit-btn">Kirim Laporan</button>
+    </form>
+  </section>
+
+  <!-- Chat Bantuan -->
+  <section class="card">
+    <h2>Chat Bantuan</h2>
+    <p>Butuh jawaban cepat? Klik tombol di bawah untuk mulai chat dengan tim bantuan kami.</p>
+    <button class="chat-button" id="chatBtn">Mulai Chat</button>
+  </section>
+
+  <script>
+    // Toggle FAQ list
+    const faqHeader = document.getElementById('faq-header');
+    const faqList = document.getElementById('faq-list');
+
+    faqHeader.addEventListener('click', () => {
+      faqList.classList.toggle('active');
+    });
+
+    // Simulasi chat bantuan
+    document.getElementById('chatBtn').addEventListener('click', () => {
+      alert('Fitur chat bantuan masih dalam pengembangan, silakan hubungi email support@launchu.id.');
+    });
+
+    // Handle form laporan masalah
+    document.getElementById('report-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nama = e.target.nama.value.trim();
+      const email = e.target.email.value.trim();
+      const masalah = e.target.masalah.value.trim();
+
+      if(nama && email && masalah) {
+        console.log('Laporan Masalah:', { nama, email, masalah });
+        alert('Terima kasih sudah mengirim laporan. Kami akan menindaklanjuti segera.');
+        e.target.reset();
+      } else {
+        alert('Mohon isi semua kolom dengan benar.');
+      }
+    });
+  </script>
+
+</body>
+</html>

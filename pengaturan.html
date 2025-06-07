@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pengaturan - Launch U</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-light: #f2f2f2;
+      --bg-dark: #121212;
+      --text-light: #222;
+      --text-dark: #f2f2f2;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg-light);
+      color: var(--text-light);
+      padding: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .dark-mode {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      background: rgba(0, 0, 0, 0.05);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    select, input[type="checkbox"] {
+      margin-bottom: 20px;
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background: #ff6a00;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background: #e55b00;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Pengaturan Aplikasi</h1>
+
+    <!-- Ubah Tema -->
+    <div class="toggle-container">
+      <label for="tema">Ubah Tema</label>
+      <select id="tema" onchange="ubahTema()">
+        <option value="terang">Terang</option>
+        <option value="gelap">Gelap</option>
+      </select>
+    </div>
+
+    <!-- Ganti Bahasa -->
+    <div class="toggle-container">
+      <label for="bahasa">Ganti Bahasa</label>
+      <select id="bahasa">
+        <option value="id">Bahasa Indonesia</option>
+        <option value="en">English</option>
+      </select>
+    </div>
+
+    <!-- Privasi Akun -->
+    <div class="toggle-container">
+      <label for="privasi">Privasi Akun</label>
+      <select id="privasi">
+        <option value="tampilkan">Nama Ditampilkan</option>
+        <option value="anonim">Anonim</option>
+      </select>
+    </div>
+
+    <!-- Verifikasi Dua Langkah -->
+    <div class="toggle-container">
+      <label for="verifikasi">Verifikasi Dua Langkah</label>
+      <input type="checkbox" id="verifikasi" />
+    </div>
+
+    <!-- Logout -->
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <script>
+    function ubahTema() {
+      const tema = document.getElementById("tema").value;
+      if (tema === "gelap") {
+        document.body.classList.add("dark-mode");
+      } else {
+        document.body.classList.remove("dark-mode");
+      }
+    }
+
+    function logout() {
+      alert("Anda telah logout!");
+      window.location.href = "login.html"; // arahkan ke halaman login
+    }
+  </script>
+
+</body>
+</html>

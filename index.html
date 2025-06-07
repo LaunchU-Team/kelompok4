@@ -1,41 +1,148 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Launch U - Crowdfunding Mahasiswa</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Beranda - Launch U</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+    body {
+      background: linear-gradient(135deg, #0052cc, #ff6a00);
+      color: #fff;
+      padding: 30px;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    header h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #fff;
+      background: #ff6a00;
+      padding: 12px 28px;
+      border-radius: 10px;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(255, 106, 0, 0.5);
+      transition: background 0.3s;
+    }
+
+    nav a:hover {
+      background: #e05b00;
+    }
+
+    .intro {
+      max-width: 700px;
+      margin: 0 auto 50px;
+      background: rgba(255,255,255,0.9);
+      color: #333;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      font-size: 1.2rem;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .features {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background: rgba(255,255,255,0.9);
+      color: #333;
+      border-radius: 16px;
+      padding: 25px;
+      width: 280px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      text-align: center;
+      transition: transform 0.3s;
+      cursor: default;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+    }
+
+    .feature-card h3 {
+      color: #0052cc;
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+    }
+
+    .feature-card p {
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 700px) {
+      body { padding: 15px; }
+      header h1 { font-size: 2rem; }
+      nav {
+        flex-direction: column;
+        gap: 15px;
+      }
+      .features {
+        flex-direction: column;
+        gap: 25px;
+      }
+      .feature-card {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
+
   <header>
-    <h1 style="color: #2c3e50;">🚀 Launch U</h1>
-    <p>Platform Crowdfunding Proyek Penelitian Mahasiswa</p>
+    <h1>Selamat Datang di Launch U</h1>
   </header>
 
   <nav>
-    <ul>
-      <li><a href="login.html">Login</a></li>
-      <li><a href="donasi.html">Donasi</a></li>
-      <li><a href="dashboard.html">Dashboard</a></li>
-      <li><a href="akun.html">Akun</a></li>
-      <li><a href="bantuan.html">Bantuan</a></li>
-      <li><a href="tentang.html">Tentang</a></li>
-      <li><a href="pengaturan.html">Pengaturan</a></li>
-      <li><a href="dompet.html">Dompet</a></li>
-    </ul>
+    <a href="donasi.html">Donasi</a>
+    <a href="kampanye.html">Buat Kampanye</a>
+    <a href="bantuan.html">Pusat Bantuan</a>
+    <a href="profil.html">Profil Saya</a>
   </nav>
 
-  <main>
-    <section>
-      <h2>🌟 Selamat Datang di Launch U</h2>
-      <p>Dukung proyek-proyek penelitian mahasiswa terbaik dari seluruh Indonesia. Yuk mulai donasi dan bantu mereka wujudkan ide besar!</p>
-      <a href="donasi.html" class="btn-donasi">Lihat Proyek</a>
-    </section>
-  </main>
+  <section class="intro">
+    <p>Launch U adalah platform donasi digital yang memudahkan Anda untuk berbagi dan membantu berbagai kampanye sosial dengan cepat dan transparan. Yuk, bergabung dan buat perubahan nyata bersama kami!</p>
+  </section>
 
-  <footer>
-    <p>&copy; 2025 Launch U. Semua hak dilindungi.</p>
-  </footer>
+  <section class="features">
+    <div class="feature-card">
+      <h3>Mudah dan Aman</h3>
+      <p>Donasi langsung melalui berbagai metode pembayaran dengan keamanan terjamin.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Buat Kampanye</h3>
+      <p>Buat dan kelola kampanye penggalangan dana secara mudah dan cepat.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Transparan</h3>
+      <p>Laporan dana kampanye bisa dipantau secara real-time oleh semua pihak.</p>
+    </div>
+  </section>
+
 </body>
 </html>

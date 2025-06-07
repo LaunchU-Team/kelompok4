@@ -1,41 +1,114 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Launch U - Crowdfunding Mahasiswa</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login / Sign Up - Launch U</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+    body {
+      background: linear-gradient(135deg, #0052cc, #ff6a00);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    header { text-align: center; color: white; margin-bottom: 30px; }
+    main {
+      max-width: 400px;
+      margin: auto;
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    h2 { color: #003d99; text-align: center; margin-bottom: 20px; }
+    label { font-weight: 600; display: block; margin-top: 15px; }
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 5px;
+    }
+    .btn {
+      margin-top: 25px;
+      padding: 12px;
+      width: 100%;
+      background-color: #ff6a00;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    p { text-align: center; margin-top: 15px; }
+    a { color: #0052cc; cursor: pointer; text-decoration: none; }
+  </style>
 </head>
 <body>
   <header>
-    <h1 style="color: #2c3e50;">🚀 Launch U</h1>
-    <p>Platform Crowdfunding Proyek Penelitian Mahasiswa</p>
+    <h1>Launch U</h1>
+    <p>Silakan login atau daftar untuk melanjutkan</p>
   </header>
 
-  <nav>
-    <ul>
-      <li><a href="login.html">Login</a></li>
-      <li><a href="donasi.html">Donasi</a></li>
-      <li><a href="dashboard.html">Dashboard</a></li>
-      <li><a href="akun.html">Akun</a></li>
-      <li><a href="bantuan.html">Bantuan</a></li>
-      <li><a href="tentang.html">Tentang</a></li>
-      <li><a href="pengaturan.html">Pengaturan</a></li>
-      <li><a href="dompet.html">Dompet</a></li>
-    </ul>
-  </nav>
-
   <main>
-    <section>
-      <h2>🌟 Selamat Datang di Launch U</h2>
-      <p>Dukung proyek-proyek penelitian mahasiswa terbaik dari seluruh Indonesia. Yuk mulai donasi dan bantu mereka wujudkan ide besar!</p>
-      <a href="donasi.html" class="btn-donasi">Lihat Proyek</a>
-    </section>
+    <h2 id="form-title">Login</h2>
+    <form id="auth-form" onsubmit="handleAuth(event)">
+      <label>Email</label>
+      <input type="email" id="email" required />
+
+      <label>Password</label>
+      <input type="password" id="password" required />
+
+      <button type="submit" class="btn" id="submit-btn">Masuk</button>
+    </form>
+
+    <p id="toggle-text">
+      Belum punya akun? <a onclick="toggleMode()">Sign Up</a>
+    </p>
   </main>
 
-  <footer>
-    <p>&copy; 2025 Launch U. Semua hak dilindungi.</p>
-  </footer>
+  <script>
+    let isLogin = true;
+
+    function toggleMode() {
+      isLogin = !isLogin;
+      document.getElementById("form-title").innerText = isLogin ? "Login" : "Sign Up";
+      document.getElementById("submit-btn").innerText = isLogin ? "Masuk" : "Daftar";
+      document.getElementById("toggle-text").innerHTML = isLogin
+        ? 'Belum punya akun? <a onclick="toggleMode()">Sign Up</a>'
+        : 'Sudah punya akun? <a onclick="toggleMode()">Login</a>';
+    }
+
+    function handleAuth(e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      let users = JSON.parse(localStorage.getItem("users") || "[]");
+
+      if (isLogin) {
+        const found = users.find(u => u.email === email && u.password === password);
+        if (found) {
+          localStorage.setItem("loggedIn", "true");
+          localStorage.setItem("currentUser", email);
+          alert("Login berhasil!");
+          window.location.href = "donasi.html";
+        } else {
+          alert("Email atau password salah.");
+        }
+      } else {
+        const exists = users.find(u => u.email === email);
+        if (exists) {
+          alert("Email sudah terdaftar.");
+          return;
+        }
+        users.push({ email, password });
+        localStorage.setItem("users", JSON.stringify(users));
+        alert("Akun berhasil dibuat. Silakan login.");
+        toggleMode(); // Pindah ke login
+      }
+    }
+  </script>
 </body>
 </html>

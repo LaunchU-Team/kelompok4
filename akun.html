@@ -75,13 +75,13 @@
     <div class="profile-info">
       <label>Foto Profil</label>
       <img id="fotoProfil" src="https://via.placeholder.com/120" alt="Foto Profil" />
-      <input type="file" onchange="previewFoto(this)" />
+      <input type="file" id="uploadFoto" accept="image/*" />
 
       <label>Nama Lengkap</label>
-      <input type="text" id="nama" value="Shakira Fazilatun Nisa" />
+      <input type="text" id="nama" value="" />
 
       <label>Email</label>
-      <input type="email" id="email" value="shakira@email.com" />
+      <input type="email" id="email" value="" />
 
       <label>Nomor HP</label>
       <input type="text" id="hp" value="0821xxxxxxx" placeholder="Opsional" />
@@ -103,23 +103,45 @@
   </div>
 
   <script>
-    function previewFoto(input) {
-      const file = input.files[0];
+    const fotoProfil = document.getElementById("fotoProfil");
+    const uploadFoto = document.getElementById("uploadFoto");
+    const namaInput = document.getElementById("nama");
+    const emailInput = document.getElementById("email");
+
+    // Saat halaman dimuat, ambil dari localStorage
+    window.onload = () => {
+      const fotoSimpan = localStorage.getItem("fotoProfil");
+      const namaSimpan = localStorage.getItem("namaUser");
+      const emailSimpan = localStorage.getItem("emailUser");
+
+      if (fotoSimpan) fotoProfil.src = fotoSimpan;
+      if (namaSimpan) namaInput.value = namaSimpan;
+      if (emailSimpan) emailInput.value = emailSimpan;
+    };
+
+    // Simpan foto saat dipilih
+    uploadFoto.addEventListener("change", function () {
+      const file = this.files[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
-          document.getElementById('fotoProfil').src = e.target.result;
+        reader.onload = function (e) {
+          const base64 = e.target.result;
+          fotoProfil.src = base64;
+          localStorage.setItem("fotoProfil", base64);
         };
         reader.readAsDataURL(file);
       }
-    }
+    });
 
     function simpanPerubahan() {
-      const nama = document.getElementById('nama').value;
-      const email = document.getElementById('email').value;
+      const nama = namaInput.value;
+      const email = emailInput.value;
       const hp = document.getElementById('hp').value;
       const status = document.getElementById('status').value;
       const sandi = document.getElementById('passwordBaru').value;
+
+      localStorage.setItem("namaUser", nama);
+      localStorage.setItem("emailUser", email);
 
       alert("Perubahan akun telah disimpan!\n\nNama: " + nama + "\nEmail: " + email + "\nNo HP: " + hp + "\nStatus: " + status + (sandi ? "\nPassword: (diperbarui)" : ""));
     }

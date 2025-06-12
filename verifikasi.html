@@ -1,0 +1,63 @@
+<!-- verifikasi.html -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verifikasi Kampanye - Launch U</title>
+</head>
+<body>
+  <h2>Halaman Verifikasi Kampanye</h2>
+  <div id="list-kampanye"></div>
+
+  <script>
+    const userLogin = JSON.parse(localStorage.getItem("userLogin"));
+
+    // Cek apakah user login dan apakah dia admin
+    if (!userLogin || userLogin.role !== "admin") {
+      alert("Kamu tidak punya akses ke halaman ini.");
+      window.location.href = "dashboard.html";
+    }
+
+    // Ambil kampanye dari localStorage
+    const kampanye = JSON.parse(localStorage.getItem("kampanyeData")) || [];
+
+    // Filter kampanye yang belum diverifikasi
+    const pending = kampanye.filter(k => !k.terverifikasi);
+
+    const container = document.getElementById("list-kampanye");
+    if (pending.length === 0) {
+      container.innerHTML = "<p>Tidak ada kampanye yang menunggu verifikasi.</p>";
+    } else {
+      pending.forEach((k, i) => {
+        const div = document.createElement("div");
+        div.innerHTML = `
+          <h4>${k.judul}</h4>
+          <p>${k.deskripsi}</p>
+          <button onclick="verifikasi(${i})">Verifikasi</button>
+          <hr>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function verifikasi(index) {
+      // cari indeks kampanye asli
+      const allKampanye = JSON.parse(localStorage.getItem("kampanyeData")) || [];
+      let count = -1;
+      for (let i = 0; i < allKampanye.length; i++) {
+        if (!allKampanye[i].terverifikasi) {
+          count++;
+          if (count === index) {
+            allKampanye[i].terverifikasi = true;
+            break;
+          }
+        }
+      }
+      localStorage.setItem("kampanyeData", JSON.stringify(allKampanye));
+      alert("Kampanye berhasil diverifikasi!");
+      location.reload();
+    }
+  </script>
+</body>
+</html>

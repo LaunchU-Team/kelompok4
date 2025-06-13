@@ -78,18 +78,14 @@
       <input type="file" onchange="previewFoto(this)" />
 
       <label>Nama Lengkap</label>
-      <input type="text" id="nama" value="Shakira Fazilatun Nisa" />
+      <input type="text" id="nama" />
 
       <label>Email</label>
-      <input type="email" id="email" value="shakira@email.com" />
-
-      <label>Nomor HP</label>
-      <input type="text" id="hp" value="0821xxxxxxx" placeholder="Opsional" />
+      <input type="email" id="email" readonly />
 
       <label>Status Akun</label>
-      <select id="status">
+      <select id="status" disabled>
         <option value="terverifikasi" selected>Terverifikasi</option>
-        <option value="belum">Belum Terverifikasi</option>
       </select>
     </div>
 
@@ -103,6 +99,21 @@
   </div>
 
   <script>
+    // Ambil data user dari localStorage
+    const emailLogin = localStorage.getItem("currentUser");
+    let users = JSON.parse(localStorage.getItem("users") || "[]");
+    let user = users.find(u => u.email === emailLogin);
+
+    if (!user) {
+      alert("Pengguna belum login.");
+      window.location.href = "login.html";
+    }
+
+    // Tampilkan data user
+    document.getElementById("nama").value = user.nama;
+    document.getElementById("email").value = user.email;
+    document.getElementById("status").value = "terverifikasi";
+
     function previewFoto(input) {
       const file = input.files[0];
       if (file) {
@@ -115,16 +126,35 @@
     }
 
     function simpanPerubahan() {
-      const nama = document.getElementById('nama').value;
-      const email = document.getElementById('email').value;
-      const hp = document.getElementById('hp').value;
-      const status = document.getElementById('status').value;
-      const sandi = document.getElementById('passwordBaru').value;
+      const namaBaru = document.getElementById('nama').value;
+      const passwordBaru = document.getElementById('passwordBaru').value;
 
-      alert("Perubahan akun telah disimpan!\n\nNama: " + nama + "\nEmail: " + email + "\nNo HP: " + hp + "\nStatus: " + status + (sandi ? "\nPassword: (diperbarui)" : ""));
+      if (namaBaru.trim() === "") {
+        alert("Nama tidak boleh kosong.");
+        return;
+      }
+
+      // Update nama
+      user.nama = namaBaru;
+
+      // Update password jika diisi
+      if (passwordBaru.trim() !== "") {
+        if (passwordBaru.length < 6) {
+          alert("Password harus minimal 6 karakter.");
+          return;
+        }
+        user.password = passwordBaru;
+      }
+
+      // Simpan kembali ke localStorage
+      const index = users.findIndex(u => u.email === user.email);
+      users[index] = user;
+      localStorage.setItem("users", JSON.stringify(users));
+
+      alert("Perubahan akun telah disimpan!");
+      document.getElementById("passwordBaru").value = "";
     }
   </script>
 
 </body>
 </html>
-ini akun

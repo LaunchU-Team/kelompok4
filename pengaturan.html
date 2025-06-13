@@ -80,12 +80,12 @@
 <body>
 
   <div class="container">
-    <h1>Pengaturan Aplikasi</h1>
+    <h1 id="judul">Pengaturan Aplikasi</h1>
 
     <!-- Ubah Tema -->
     <div class="toggle-container">
-      <label for="tema">Ubah Tema</label>
-      <select id="tema" onchange="ubahTema()">
+      <label id="labelTema" for="tema">Ubah Tema</label>
+      <select id="tema">
         <option value="terang">Terang</option>
         <option value="gelap">Gelap</option>
       </select>
@@ -93,7 +93,7 @@
 
     <!-- Ganti Bahasa -->
     <div class="toggle-container">
-      <label for="bahasa">Ganti Bahasa</label>
+      <label id="labelBahasa" for="bahasa">Ganti Bahasa</label>
       <select id="bahasa">
         <option value="id">Bahasa Indonesia</option>
         <option value="en">English</option>
@@ -102,7 +102,7 @@
 
     <!-- Privasi Akun -->
     <div class="toggle-container">
-      <label for="privasi">Privasi Akun</label>
+      <label id="labelPrivasi" for="privasi">Privasi Akun</label>
       <select id="privasi">
         <option value="tampilkan">Nama Ditampilkan</option>
         <option value="anonim">Anonim</option>
@@ -111,28 +111,90 @@
 
     <!-- Verifikasi Dua Langkah -->
     <div class="toggle-container">
-      <label for="verifikasi">Verifikasi Dua Langkah</label>
+      <label id="labelVerifikasi" for="verifikasi">Verifikasi Dua Langkah</label>
       <input type="checkbox" id="verifikasi" />
     </div>
 
-    <!-- Logout -->
-    <button onclick="logout()">Logout</button>
+    <!-- Tombol Logout dihapus -->
   </div>
 
   <script>
-    function ubahTema() {
-      const tema = document.getElementById("tema").value;
-      if (tema === "gelap") {
+    const translations = {
+      id: {
+        judul: "Pengaturan Aplikasi",
+        labelTema: "Ubah Tema",
+        labelBahasa: "Ganti Bahasa",
+        labelPrivasi: "Privasi Akun",
+        labelVerifikasi: "Verifikasi Dua Langkah"
+      },
+      en: {
+        judul: "App Settings",
+        labelTema: "Change Theme",
+        labelBahasa: "Change Language",
+        labelPrivasi: "Account Privacy",
+        labelVerifikasi: "Two-Factor Verification"
+      }
+    };
+
+    function applyTheme(mode) {
+      if (mode === "gelap") {
         document.body.classList.add("dark-mode");
       } else {
         document.body.classList.remove("dark-mode");
       }
     }
 
-    function logout() {
-      alert("Anda telah logout!");
-      window.location.href = "login.html"; // arahkan ke halaman login
+    function translateUI(lang) {
+      const t = translations[lang];
+      document.getElementById("judul").textContent = t.judul;
+      document.getElementById("labelTema").textContent = t.labelTema;
+      document.getElementById("labelBahasa").textContent = t.labelBahasa;
+      document.getElementById("labelPrivasi").textContent = t.labelPrivasi;
+      document.getElementById("labelVerifikasi").textContent = t.labelVerifikasi;
     }
+
+    function loadSettings() {
+      // Tema
+      const tema = localStorage.getItem("tema") || "terang";
+      document.getElementById("tema").value = tema;
+      applyTheme(tema);
+
+      // Bahasa
+      const bahasa = localStorage.getItem("bahasa") || "id";
+      document.getElementById("bahasa").value = bahasa;
+      translateUI(bahasa);
+
+      // Privasi
+      const privasi = localStorage.getItem("privasi") || "tampilkan";
+      document.getElementById("privasi").value = privasi;
+
+      // Verifikasi
+      const verifikasi = localStorage.getItem("verifikasi") === "true";
+      document.getElementById("verifikasi").checked = verifikasi;
+    }
+
+    // Event Listeners
+    document.getElementById("tema").addEventListener("change", function () {
+      const val = this.value;
+      localStorage.setItem("tema", val);
+      applyTheme(val);
+    });
+
+    document.getElementById("bahasa").addEventListener("change", function () {
+      const val = this.value;
+      localStorage.setItem("bahasa", val);
+      translateUI(val);
+    });
+
+    document.getElementById("privasi").addEventListener("change", function () {
+      localStorage.setItem("privasi", this.value);
+    });
+
+    document.getElementById("verifikasi").addEventListener("change", function () {
+      localStorage.setItem("verifikasi", this.checked);
+    });
+
+    loadSettings();
   </script>
 
 </body>

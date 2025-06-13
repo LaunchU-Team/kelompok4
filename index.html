@@ -55,6 +55,9 @@
     }
     p { text-align: center; margin-top: 15px; }
     a { color: #0052cc; cursor: pointer; text-decoration: none; }
+    #nama-group, #konfirmasi-group {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -66,6 +69,11 @@
   <main>
     <h2 id="form-title">Login</h2>
     <form id="auth-form" onsubmit="handleAuth(event)">
+      <div id="nama-group">
+        <label>Nama Lengkap</label>
+        <input type="text" id="namaLengkap" />
+      </div>
+
       <label>Email</label>
       <input type="email" id="email" required />
 
@@ -73,6 +81,11 @@
       <div class="input-group">
         <input type="password" id="password" required />
         <span class="toggle-password" onclick="togglePassword()">👁️</span>
+      </div>
+
+      <div id="konfirmasi-group">
+        <label>Konfirmasi Password</label>
+        <input type="password" id="konfirmasiPassword" />
       </div>
 
       <button type="submit" class="btn" id="submit-btn">Masuk</button>
@@ -93,6 +106,8 @@
       document.getElementById("toggle-text").innerHTML = isLogin
         ? 'Belum punya akun? <a onclick="toggleMode()">Sign Up</a>'
         : 'Sudah punya akun? <a onclick="toggleMode()">Login</a>';
+      document.getElementById("nama-group").style.display = isLogin ? "none" : "block";
+      document.getElementById("konfirmasi-group").style.display = isLogin ? "none" : "block";
     }
 
     function togglePassword() {
@@ -104,6 +119,8 @@
       e.preventDefault();
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value.trim();
+      const nama = document.getElementById("namaLengkap").value.trim();
+      const konfirmasiPassword = document.getElementById("konfirmasiPassword").value.trim();
 
       if (email === "admin.LaunchU@gmail.com" && password === "kelompok4") {
         alert("Login Admin berhasil!");
@@ -124,15 +141,24 @@
           alert("Email atau password salah.");
         }
       } else {
+        // Sign up
+        if (!nama) {
+          alert("Nama lengkap wajib diisi.");
+          return;
+        }
+        if (password !== konfirmasiPassword) {
+          alert("Konfirmasi password tidak sesuai.");
+          return;
+        }
         const exists = users.find(u => u.email === email);
         if (exists) {
           alert("Email sudah terdaftar.");
           return;
         }
-        users.push({ email, password });
+        users.push({ email, password, nama });
         localStorage.setItem("users", JSON.stringify(users));
         alert("Akun berhasil dibuat. Silakan login.");
-        toggleMode(); // Pindah ke login
+        toggleMode(); // Kembali ke form login
       }
     }
   </script>

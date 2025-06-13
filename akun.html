@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Akun - Launch U</title>
+  <title>Profil Pengguna - Launch U</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #0052cc, #ff6a00);
+      background: linear-gradient(135deg, #5a69af, #c66b4e);
       padding: 20px;
       color: white;
     }
     .container {
-      max-width: 800px;
+      max-width: 700px;
       margin: 0 auto;
       background: rgba(255, 255, 255, 0.1);
       border-radius: 16px;
@@ -24,9 +24,6 @@
       text-align: center;
       margin-bottom: 30px;
       text-shadow: 1px 1px 5px rgba(0,0,0,0.4);
-    }
-    .profile-info, .edit-section {
-      margin-bottom: 30px;
     }
     label {
       display: block;
@@ -41,23 +38,9 @@
       border-radius: 8px;
       border: none;
     }
-    input[type="file"] {
-      padding: 6px;
-      background: white;
+    input[readonly], select[disabled] {
+      background-color: #eee;
       color: #333;
-    }
-    button {
-      background: #ff6a00;
-      color: white;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    button:hover {
-      background: #e55b00;
     }
     img {
       border-radius: 50%;
@@ -72,78 +55,31 @@
   <div class="container">
     <h1>Profil Pengguna</h1>
 
-    <div class="profile-info">
-      <label>Foto Profil</label>
-      <img id="fotoProfil" src="https://via.placeholder.com/120" alt="Foto Profil" />
-      <input type="file" id="uploadFoto" accept="image/*" />
+    <label>Nama Lengkap</label>
+    <input type="text" id="nama" readonly />
 
-      <label>Nama Lengkap</label>
-      <input type="text" id="nama" value="" />
+    <label>Email</label>
+    <input type="email" id="email" readonly />
 
-      <label>Email</label>
-      <input type="email" id="email" value="" />
-
-      <label>Nomor HP</label>
-      <input type="text" id="hp" value="0821xxxxxxx" placeholder="Opsional" />
-
-      <label>Status Akun</label>
-      <select id="status">
-        <option value="terverifikasi" selected>Terverifikasi</option>
-        <option value="belum">Belum Terverifikasi</option>
-      </select>
-    </div>
-
-    <div class="edit-section">
-      <h2>Edit Akun</h2>
-
-      <label>Ganti Kata Sandi</label>
-      <input type="password" id="passwordBaru" placeholder="Kata sandi baru" />
-      <button onclick="simpanPerubahan()">Simpan Perubahan</button>
-    </div>
+    <label>Status Akun</label>
+    <select id="status" disabled>
+      <option value="terverifikasi">Terverifikasi</option>
+    </select>
   </div>
 
   <script>
-    const fotoProfil = document.getElementById("fotoProfil");
-    const uploadFoto = document.getElementById("uploadFoto");
-    const namaInput = document.getElementById("nama");
-    const emailInput = document.getElementById("email");
+    // Ambil email dari login yang sedang aktif
+    const emailLogin = localStorage.getItem("currentUser");
+    const semuaUser = JSON.parse(localStorage.getItem("users") || "[]");
+    const userLogin = semuaUser.find(u => u.email === emailLogin);
 
-    // Saat halaman dimuat, ambil dari localStorage
-    window.onload = () => {
-      const fotoSimpan = localStorage.getItem("fotoProfil");
-      const namaSimpan = localStorage.getItem("namaUser");
-      const emailSimpan = localStorage.getItem("emailUser");
-
-      if (fotoSimpan) fotoProfil.src = fotoSimpan;
-      if (namaSimpan) namaInput.value = namaSimpan;
-      if (emailSimpan) emailInput.value = emailSimpan;
-    };
-
-    // Simpan foto saat dipilih
-    uploadFoto.addEventListener("change", function () {
-      const file = this.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          const base64 = e.target.result;
-          fotoProfil.src = base64;
-          localStorage.setItem("fotoProfil", base64);
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-
-    function simpanPerubahan() {
-      const nama = namaInput.value;
-      const email = emailInput.value;
-      const hp = document.getElementById('hp').value;
-      const status = document.getElementById('status').value;
-      const sandi = document.getElementById('passwordBaru').value;
-
-      localStorage.setItem("namaUser", nama);
-      localStorage.setItem("emailUser", email);
-
-      alert("Perubahan akun telah disimpan!\n\nNama: " + nama + "\nEmail: " + email + "\nNo HP: " + hp + "\nStatus: " + status + (sandi ? "\nPassword: (diperbarui)" : ""));
+    if (userLogin) {
+      document.getElementById("nama").value = userLogin.nama || "Pengguna";
+      document.getElementById("email").value = userLogin.email;
+      document.getElementById("status").value = "terverifikasi";
+    } else {
+      alert("Pengguna belum login.");
+      window.location.href = "login.html";
     }
   </script>
 

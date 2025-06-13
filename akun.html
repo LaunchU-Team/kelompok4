@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Akun - Launch U</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=stylesheet" rel="stylesheet" />
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -55,6 +55,7 @@
       font-weight: bold;
       cursor: pointer;
       transition: background 0.3s ease;
+      margin-right: 10px;
     }
     button:hover {
       background: #e55b00;
@@ -64,6 +65,16 @@
       max-width: 120px;
       margin-bottom: 15px;
       display: block;
+    }
+    .logout-btn {
+      background: #ffffff;
+      color: #ff6a00;
+      border: 2px solid #ff6a00;
+      margin-top: 20px;
+    }
+    .logout-btn:hover {
+      background: #ff6a00;
+      color: white;
     }
   </style>
 </head>
@@ -95,6 +106,7 @@
       <label>Ganti Kata Sandi</label>
       <input type="password" id="passwordBaru" placeholder="Kata sandi baru" />
       <button onclick="simpanPerubahan()">Simpan Perubahan</button>
+      <button class="logout-btn" onclick="logout()">Logout</button>
     </div>
   </div>
 
@@ -114,12 +126,19 @@
     document.getElementById("email").value = user.email;
     document.getElementById("status").value = "terverifikasi";
 
+    // Tampilkan foto profil jika ada
+    if (user.fotoProfil) {
+      document.getElementById("fotoProfil").src = user.fotoProfil;
+    }
+
     function previewFoto(input) {
       const file = input.files[0];
       if (file) {
         const reader = new FileReader();
         reader.onload = function(e) {
-          document.getElementById('fotoProfil').src = e.target.result;
+          const dataUrl = e.target.result;
+          document.getElementById('fotoProfil').src = dataUrl;
+          user.fotoProfil = dataUrl; // simpan ke object user
         };
         reader.readAsDataURL(file);
       }
@@ -134,10 +153,8 @@
         return;
       }
 
-      // Update nama
       user.nama = namaBaru;
 
-      // Update password jika diisi
       if (passwordBaru.trim() !== "") {
         if (passwordBaru.length < 6) {
           alert("Password harus minimal 6 karakter.");
@@ -146,13 +163,17 @@
         user.password = passwordBaru;
       }
 
-      // Simpan kembali ke localStorage
       const index = users.findIndex(u => u.email === user.email);
       users[index] = user;
       localStorage.setItem("users", JSON.stringify(users));
 
       alert("Perubahan akun telah disimpan!");
       document.getElementById("passwordBaru").value = "";
+    }
+
+    function logout() {
+      localStorage.removeItem("currentUser");
+      window.location.href = "login.html";
     }
   </script>
 

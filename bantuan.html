@@ -104,6 +104,74 @@
       background: #003d99;
     }
 
+    /* Chat Window */
+    #chatWindow {
+      display: none;
+      position: fixed;
+      bottom: 100px;
+      right: 30px;
+      width: 300px;
+      height: 400px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      overflow: hidden;
+      z-index: 1000;
+    }
+
+    #chatWindowHeader {
+      background: #0052cc;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      font-weight: bold;
+      position: relative;
+    }
+
+    #closeChat {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    #chatContent {
+      padding: 10px;
+      height: 300px;
+      overflow-y: auto;
+      font-size: 14px;
+      background: #f4f4f4;
+    }
+
+    #chatContent p {
+      margin-bottom: 8px;
+    }
+
+    #chatInputSection {
+      display: flex;
+      border-top: 1px solid #ccc;
+    }
+
+    #chatInput {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      outline: none;
+    }
+
+    #sendBtn {
+      background: #ff6a00;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    #sendBtn:hover {
+      background: #e05b00;
+    }
+
     @media (max-width: 600px) {
       body { padding: 15px; }
       header h1 { font-size: 1.8rem; }
@@ -160,18 +228,24 @@
     <button class="chat-button" id="chatBtn">Mulai Chat</button>
   </section>
 
+  <!-- Chat Window -->
+  <div id="chatWindow">
+    <div id="chatWindowHeader">
+      Chat Bantuan <span id="closeChat">&times;</span>
+    </div>
+    <div id="chatContent"></div>
+    <div id="chatInputSection">
+      <input type="text" id="chatInput" placeholder="Ketik pesan..." />
+      <button id="sendBtn">Kirim</button>
+    </div>
+  </div>
+
   <script>
     // Toggle FAQ list
     const faqHeader = document.getElementById('faq-header');
     const faqList = document.getElementById('faq-list');
-
     faqHeader.addEventListener('click', () => {
       faqList.classList.toggle('active');
-    });
-
-    // Simulasi chat bantuan
-    document.getElementById('chatBtn').addEventListener('click', () => {
-      alert('Fitur chat bantuan masih dalam pengembangan, silakan hubungi email support@launchu.id.');
     });
 
     // Handle form laporan masalah
@@ -189,6 +263,45 @@
         alert('Mohon isi semua kolom dengan benar.');
       }
     });
+
+    // Chat bantuan aktif
+    const chatBtn = document.getElementById('chatBtn');
+    const chatWindow = document.getElementById('chatWindow');
+    const chatContent = document.getElementById('chatContent');
+    const chatInput = document.getElementById('chatInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const closeChat = document.getElementById('closeChat');
+
+    chatBtn.addEventListener('click', () => {
+      chatWindow.style.display = 'block';
+    });
+
+    closeChat.addEventListener('click', () => {
+      chatWindow.style.display = 'none';
+    });
+
+    sendBtn.addEventListener('click', kirimPesan);
+    chatInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') kirimPesan();
+    });
+
+    function kirimPesan() {
+      const pesan = chatInput.value.trim();
+      if (pesan) {
+        tampilkanPesan('Anda', pesan);
+        chatInput.value = '';
+        setTimeout(() => {
+          tampilkanPesan('Bantuan', 'Terima kasih atas pesan Anda. Kami akan segera merespon.');
+        }, 1000);
+      }
+    }
+
+    function tampilkanPesan(pengirim, pesan) {
+      const p = document.createElement('p');
+      p.innerHTML = `<strong>${pengirim}:</strong> ${pesan}`;
+      chatContent.appendChild(p);
+      chatContent.scrollTop = chatContent.scrollHeight;
+    }
   </script>
 
 </body>

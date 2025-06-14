@@ -30,7 +30,7 @@
 
     .saldo {
       font-size: 2.5rem;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
 
     button {
@@ -42,13 +42,13 @@
       font-size: 1rem;
       cursor: pointer;
       font-weight: bold;
+      margin-top: 10px;
     }
 
     button:hover {
       background: #e55b00;
     }
 
-    /* Popup form */
     .popup {
       display: none;
       position: fixed;
@@ -88,6 +88,31 @@
       background: #999;
       margin-top: 10px;
     }
+
+    .riwayat {
+      margin-top: 30px;
+      text-align: left;
+      background: rgba(255,255,255,0.2);
+      padding: 15px;
+      border-radius: 12px;
+    }
+
+    .riwayat h3 {
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .riwayat ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .riwayat li {
+      padding: 8px;
+      background: rgba(255,255,255,0.1);
+      margin-bottom: 6px;
+      border-radius: 8px;
+    }
   </style>
 </head>
 <body>
@@ -96,9 +121,13 @@
     <h1>Dompet Saya</h1>
     <div class="saldo" id="saldoDisplay">Rp 0</div>
     <button onclick="bukaPopup()">Isi Saldo</button>
+
+    <div class="riwayat">
+      <h3>Riwayat Transaksi</h3>
+      <ul id="riwayatList"></ul>
+    </div>
   </div>
 
-  <!-- Popup Form -->
   <div class="popup" id="popupForm">
     <div class="popup-content">
       <h2>Masukkan Jumlah Saldo</h2>
@@ -109,7 +138,22 @@
   </div>
 
   <script>
-    let saldo = 0;
+    let saldo = parseInt(localStorage.getItem("saldoUser")) || 0;
+    let riwayat = JSON.parse(localStorage.getItem("riwayatTransaksi")) || [];
+
+    function updateSaldoDisplay() {
+      document.getElementById("saldoDisplay").innerText = "Rp " + saldo.toLocaleString("id-ID");
+    }
+
+    function tampilkanRiwayat() {
+      const list = document.getElementById("riwayatList");
+      list.innerHTML = "";
+      riwayat.slice().reverse().forEach((item) => {
+        const li = document.createElement("li");
+        li.textContent = `${item.tanggal} - +Rp ${item.jumlah.toLocaleString("id-ID")}`;
+        list.appendChild(li);
+      });
+    }
 
     function bukaPopup() {
       document.getElementById("popupForm").style.display = "flex";
@@ -124,13 +168,24 @@
       const jumlah = parseInt(input.value);
       if (jumlah > 0) {
         saldo += jumlah;
-        document.getElementById("saldoDisplay").innerText = "Rp " + saldo.toLocaleString("id-ID");
+        localStorage.setItem("saldoUser", saldo);
+        riwayat.push({
+          tanggal: new Date().toLocaleString("id-ID"),
+          jumlah: jumlah
+        });
+        localStorage.setItem("riwayatTransaksi", JSON.stringify(riwayat));
+        updateSaldoDisplay();
+        tampilkanRiwayat();
         input.value = "";
         tutupPopup();
       } else {
         alert("Masukkan jumlah yang valid.");
       }
     }
+
+    // Tampilkan saat halaman dibuka
+    updateSaldoDisplay();
+    tampilkanRiwayat();
   </script>
 
 </body>

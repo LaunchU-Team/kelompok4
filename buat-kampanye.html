@@ -47,6 +47,13 @@
     <input type="text" id="judul" placeholder="Judul Kampanye" required>
     <textarea id="deskripsi" placeholder="Deskripsi Kampanye" rows="5" required></textarea>
     <input type="number" id="target" placeholder="Target Dana (Rp)" required>
+
+    <label for="gambar">Upload Gambar Kampanye</label>
+    <input type="file" id="gambar" accept="image/*" required>
+
+    <label for="tenggat">Tenggat Waktu</label>
+    <input type="date" id="tenggat" required>
+
     <button type="submit">Buat Kampanye</button>
   </form>
 
@@ -56,18 +63,35 @@
       const judul = document.getElementById('judul').value;
       const deskripsi = document.getElementById('deskripsi').value;
       const target = document.getElementById('target').value;
+      const gambar = document.getElementById('gambar').files[0];
+      const tenggat = document.getElementById('tenggat').value;
 
-      const kampanyeBaru = {
-        judul,
-        deskripsi,
-        target
+      if (!gambar) {
+        alert("Silakan upload gambar kampanye.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function() {
+        const gambarData = reader.result;
+
+        const kampanyeBaru = {
+          judul,
+          deskripsi,
+          target,
+          tenggat,
+          gambar: gambarData
+        };
+
+        const kampanyeSimpan = JSON.parse(localStorage.getItem('kampanyeList')) || [];
+        kampanyeSimpan.push(kampanyeBaru);
+        localStorage.setItem('kampanyeList', JSON.stringify(kampanyeSimpan));
+
+        alert('Kampanye berhasil dibuat!');
+        window.location.href = 'kampanye-saya.html';
       };
 
-      const kampanyeSimpan = JSON.parse(localStorage.getItem('kampanyeList')) || [];
-      kampanyeSimpan.push(kampanyeBaru);
-      localStorage.setItem('kampanyeList', JSON.stringify(kampanyeSimpan));
-      alert('Kampanye berhasil dibuat!');
-      window.location.href = 'kampanye-saya.html';
+      reader.readAsDataURL(gambar);
     });
   </script>
 </body>

@@ -53,6 +53,20 @@
     button:hover {
       background: #e55a00;
     }
+
+    .info-pembayaran {
+      margin-top: 15px;
+      background: #eef2f9;
+      padding: 15px;
+      border-left: 4px solid #0052cc;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .info-pembayaran img {
+      max-width: 150px;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
@@ -72,9 +86,56 @@
       <label for="pesan">Pesan atau Dukungan</label>
       <textarea id="pesan" name="pesan" rows="4"></textarea>
 
+      <label for="metode">Pilih Metode Pembayaran</label>
+      <select id="metode" name="metode" required onchange="tampilkanInfo()">
+        <option value="">-- Pilih Metode --</option>
+        <option value="qris">QRIS</option>
+        <option value="transfer">Transfer Bank</option>
+        <option value="ewallet">E-Wallet (OVO, GoPay, DANA)</option>
+        <option value="kartu">Kartu Kredit / Debit</option>
+      </select>
+
+      <div id="info-pembayaran" class="info-pembayaran"></div>
+
       <button type="submit">Kirim Donasi</button>
     </form>
   </div>
+
+  <script>
+    function tampilkanInfo() {
+      const metode = document.getElementById("metode").value;
+      const info = document.getElementById("info-pembayaran");
+
+      let isi = "";
+      if (metode === "qris") {
+        isi = `
+          <strong>Scan QR Code berikut:</strong><br />
+          <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/QR_code_example.svg" alt="QRIS" />
+        `;
+      } else if (metode === "transfer") {
+        isi = `
+          <strong>Transfer ke rekening:</strong><br />
+          BCA: 1234567890 a.n Launch U<br />
+          Mandiri: 9876543210 a.n Launch U
+        `;
+      } else if (metode === "ewallet") {
+        isi = `
+          <strong>Kirim ke salah satu nomor e-wallet berikut:</strong><br />
+          OVO: 0812-3456-7890<br />
+          GoPay: 0813-9876-5432<br />
+          DANA: 0856-1234-5678
+        `;
+      } else if (metode === "kartu") {
+        isi = `
+          <strong>Silakan masukkan detail kartu pada halaman selanjutnya (simulasi).</strong><br />
+          *Fitur ini masih dalam pengembangan.*
+        `;
+      }
+
+      info.innerHTML = isi;
+      info.style.display = metode ? "block" : "none";
+    }
+  </script>
 
 </body>
 </html>
